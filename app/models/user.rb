@@ -30,4 +30,18 @@ class User < ApplicationRecord
     follower.find_by(followed_id: user_id).destroy
   end
   
+  def User.search(search,keyword)
+    if search == "perfect_match"
+      @user = User.where("name LIKE?","#{keyword}")
+    elsif search == "partial_match"
+      @user = User.where("name LIKE(?)","%#{keyword}%")
+    elsif search == "forward_match"
+      @user = User.where("name LIKE(?)","#{keyword}%")
+    elsif search == "backward_match"
+      @user = User.where("name LIKE(?)","%#{keyword}")
+    else
+      @user = User.all
+    end
+  end
+  
 end
